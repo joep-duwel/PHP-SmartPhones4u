@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SmartPhone4u Home</title>
     <link rel="stylesheet" href="css/phones.css">
-    <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 </head>
@@ -28,32 +27,72 @@
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="login.php">inloggen</a>
+                    <a class="nav-link" href="login.php">Inloggen</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <header>
-    <div class="container-fluid py-5 "  style="background: url('img/header.png'); background-size: cover">
+    <div class="container-fluid py-5" style="background: url('img/header.png'); background-size: cover">
         <div class="row py-5"></div>
     </div>
 </header>
 <main>
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12 text-center pt-3">
-                <p class="fw-bold display-4">Toon hier Goedemiddag, goedemorgen of goedenavond</p>
-                <p class="fs-4">Wij zijn gespecialiseerd in in telefoons van Samsung en Apple</p>
-                <p class="fs-4 fst-italic">De betekenis van dit Engelse woord SmartPhone is 'slimme telefoon'. Het is een mobiele telefoon met extra functies. </p>
+                <?php
+
+                date_default_timezone_set('Europe/Amsterdam');
+                $hour = date('H');
+
+                if ($hour < 12) {
+                    echo '<p class="fw-bold display-4">Goedemorgen</p>';
+                } elseif ($hour < 18) {
+                    echo '<p class="fw-bold display-4">Goedemiddag</p>';
+                } else {
+                    echo '<p class="fw-bold display-4">Goedenavond</p>';
+                }
+                ?>
+                <p class="fs-4">Wij zijn gespecialiseerd in telefoons van Samsung en Apple</p>
+                <p class="fs-4 fst-italic">De betekenis van dit Engelse woord SmartPhone is 'slimme telefoon'. Het is een mobiele telefoon met extra functies.</p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 text-center pt-2">
                 <p class="fw-bold fs-4">
-                    <h2>Vandaag, laat de huidige datum zien</h2>
-                    <h2>Bepaal hier of de winkel open of dicht is</h2>
+                <h2>Vandaag: <?php echo date('l d F Y'); ?></h2> <!-- Laat de huidige datum zien -->
+                <h2>
+                    <?php
+
+                    $currentDay = date('l');
+                    $currentHour = date('H:i');
+
+
+                    $openingHours = [
+                        'Monday' => ['closed'],
+                        'Tuesday' => ['11:00', '22:00'],
+                        'Wednesday' => ['11:00', '22:00'],
+                        'Thursday' => ['11:00', '22:00'],
+                        'Friday' => ['15:00', '22:00'],
+                        'Saturday' => ['15:00', '22:00'],
+                        'Sunday' => ['closed']
+                    ];
+
+                    if ($openingHours[$currentDay][0] == 'closed') {
+                        echo 'De winkel is vandaag gesloten.';
+                    } else {
+                        $openTime = $openingHours[$currentDay][0];
+                        $closeTime = $openingHours[$currentDay][1];
+                        if ($currentHour >= $openTime && $currentHour <= $closeTime) {
+                            echo 'De winkel is nu open.';
+                        } else {
+                            echo 'De winkel is nu gesloten.';
+                        }
+                    }
+                    ?>
+                </h2>
                 </p>
             </div>
         </div>
